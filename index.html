@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>¿Qué no veo? - Estimulación de la Memoria Visual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="game-wrapper">
+
+  <!-- 1. PANTALLA DE INICIO -->
+  <div id="home-screen" class="screen active">
+    
+    <!-- BARRA DE PERFIL Y NIVEL XP -->
+    <div class="player-profile-badge" id="player-profile-box">
+      <span class="avatar-icon" id="equipped-avatar-icon">🦉</span>
+      <div class="profile-info">
+        <span class="player-title" id="player-level-title">🐣 Observador Principiante</span>
+        <div class="xp-bar-container">
+          <div class="xp-bar-fill" id="player-xp-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <span class="lvl-tag">Niv. <strong id="player-level-num">1</strong></span>
+      <button type="button" class="btn-reset-profile" id="btn-reset-player-profile" title="Reiniciar Puntuación para Nuevo Jugador">🔄</button>
+    </div>
+
+    <div class="logo-container">
+      <h1 class="game-title">¿QUÉ N<span class="eye-o">O</span> VE<span class="eye-o">O</span>?</h1>
+      <p class="game-subtitle" id="home-subtitle">Elige el juego para comenzar:</p>
+    </div>
+    
+    <!-- SELECCIÓN PRINCIPAL DE JUEGO -->
+    <div class="game-select-group">
+      <button class="btn btn-play btn-main-game" id="btn-play-que-no-veo">
+        <span>👁️</span> ¿QUÉ NO VEO?
+      </button>
+      <button class="btn btn-silhouettes btn-main-game" id="btn-play-sombras-magicas">
+        <span>👤</span> SOMBRAS MÁGICAS
+      </button>
+    </div>
+
+    <!-- BOTONES SECUNDARIOS DE MENÚ -->
+    <div class="home-buttons">
+      <button class="btn btn-chest pulse-btn" id="btn-open-chest-home" style="display: none;">
+        <span>🎁</span> ¡COFRE! <span class="badge-count" id="chest-count-badge">0</span>
+      </button>
+      <button class="btn btn-rewards" id="btn-open-rewards-home">
+        <span>🏆</span> ÁLBUM
+      </button>
+      <button class="btn btn-settings" id="btn-open-settings">
+        <span>⚙️</span> AJUSTES
+      </button>
+      <button class="btn btn-exit-app" id="btn-exit-app">
+        <span>🚪</span> SALIR
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. PANTALLA DE AJUSTES DOCENTE (ORGANIZADA POR MODO DE JUEGO) -->
+  <div id="settings-screen" class="screen">
+    <div class="settings-header">
+      <h2 id="settings-title">⚙️ Ajustes del Juego</h2>
+      <div style="display: flex; gap: 1vw; align-items: center;">
+        <button type="button" class="preset-btn btn-reset-preset" id="btn-reset-scores-settings">🔄 Reiniciar Puntuación</button>
+        <button class="btn btn-back" id="btn-close-settings">Guardar y Salir</button>
+      </div>
+    </div>
+
+    <!-- PESTAÑAS PRINCIPALES POR MODO DE JUEGO / AUDIENCIA -->
+    <div class="mode-tabs-container">
+      <button type="button" class="mode-tab-btn active" id="tab-mode-kids">
+        <span>🧒</span> ¿QUÉ NO VEO? (Infantil)
+      </button>
+      <button type="button" class="mode-tab-btn" id="tab-mode-adults">
+        <span>🧠</span> ¿QUÉ NO VEO? (Adultos)
+      </button>
+      <button type="button" class="mode-tab-btn" id="tab-mode-silhouettes">
+        <span>👤</span> SOMBRAS MÁGICAS
+      </button>
+    </div>
+
+    <!-- SECCIÓN 1: AJUSTES ¿QUÉ NO VEO? (INFANTIL) -->
+    <div class="settings-section active" id="sec-mode-kids">
+      <div class="settings-grid">
+        <!-- Modalidad de Juego -->
+        <div class="setting-card">
+          <label>Modalidad de Juego</label>
+          <div class="toggle-group" id="group-game-mode">
+            <button type="button" class="toggle-btn selected" data-value="single">👤 1 Jugador / Aula</button>
+            <button type="button" class="toggle-btn" data-value="versus">👥 2 Jugadores / Equipos (PDI)</button>
+          </div>
+        </div>
+
+        <!-- Familia Temática -->
+        <div class="setting-card">
+          <label for="cfg-family">Familia Temática</label>
+          <select id="cfg-family" class="cfg-family-select"></select>
+        </div>
+
+        <!-- Cantidad de estímulos -->
+        <div class="setting-card">
+          <label for="cfg-total">Número de estímulos (3 a 8)</label>
+          <div style="display: flex; align-items: center; gap: 1vw;">
+            <input type="range" id="cfg-total" class="cfg-total-range" min="3" max="8" value="4">
+            <output id="cfg-total-val" class="cfg-total-output" style="font-size: 1.4vw; font-weight: bold; color: var(--primary);">4</output>
+          </div>
+        </div>
+
+        <!-- ¿Cuántas desaparecen? -->
+        <div class="setting-card">
+          <label for="cfg-missing">¿Cuántas desaparecen?</label>
+          <select id="cfg-missing" class="cfg-missing-select">
+            <option value="1" selected>1 Elemento</option>
+            <option value="2">2 Elementos</option>
+            <option value="3">3 Elementos</option>
+          </select>
+        </div>
+
+        <!-- Tiempo de Observación -->
+        <div class="setting-card">
+          <label for="cfg-timer">Tiempo de Observación</label>
+          <select id="cfg-timer" class="cfg-timer-select">
+            <option value="0">Sin tiempo (Paso Manual / Asamblea)</option>
+            <option value="4000">4 Segundos</option>
+            <option value="6000" selected>6 Segundos (Recomendado Infantil)</option>
+            <option value="9000">9 Segundos (Pausado)</option>
+          </select>
+        </div>
+
+        <!-- Comportamiento de Huecos -->
+        <div class="setting-card">
+          <label>¿Qué ocurre con los huecos?</label>
+          <div class="toggle-group" id="group-space">
+            <button type="button" class="toggle-btn selected" data-value="keep-slot">Dejar el hueco (❓)</button>
+            <button type="button" class="toggle-btn" data-value="reorganize">Reorganizar / Colapsar</button>
+          </div>
+        </div>
+
+        <!-- Interacción -->
+        <div class="setting-card">
+          <label>Interacción al responder</label>
+          <div class="toggle-group" id="group-interaction">
+            <button type="button" class="toggle-btn selected" data-value="tap">Tocar tarjeta (Recomendado PDI)</button>
+            <button type="button" class="toggle-btn" data-value="drag">Arrastrar al hueco</button>
+          </div>
+        </div>
+
+        <!-- Fondo de Pantalla -->
+        <div class="setting-card">
+          <label for="cfg-bg-mode">Fondo de Pantalla</label>
+          <select id="cfg-bg-mode" class="cfg-bg-select">
+            <option value="random-image" selected>🎲 Fotos Aleatorias por Ronda</option>
+            <option value="theme">🎨 Temático por Categoría</option>
+            <option value="fixed-1">🖼️ Fondo de Imagen 1</option>
+            <option value="fixed-2">🖼️ Fondo de Imagen 2</option>
+            <option value="fixed-3">🖼️ Fondo de Imagen 3</option>
+            <option value="fixed-4">🖼️ Fondo de Imagen 4</option>
+            <option value="fixed-5">🖼️ Fondo de Imagen 5</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: AJUSTES ¿QUÉ NO VEO? (ADULTOS / COGNITIVO) -->
+    <div class="settings-section" id="sec-mode-adults" style="display: none;">
+      <div class="settings-grid">
+        <!-- Modalidad de Juego -->
+        <div class="setting-card">
+          <label>Modalidad de Juego</label>
+          <div class="toggle-group" id="group-game-mode-adults">
+            <button type="button" class="toggle-btn selected" data-value="single">👤 1 Jugador / Aula</button>
+            <button type="button" class="toggle-btn" data-value="versus">👥 2 Jugadores / Equipos (PDI)</button>
+          </div>
+        </div>
+
+        <!-- Familia Temática (Adultos) -->
+        <div class="setting-card">
+          <label for="cfg-family-adults">Familia Temática (Incluye Palabras)</label>
+          <select id="cfg-family-adults" class="cfg-family-select"></select>
+        </div>
+
+        <!-- Cantidad de estímulos (4 a 12) -->
+        <div class="setting-card">
+          <label for="cfg-total-adults">Número de estímulos (4 a 12)</label>
+          <div style="display: flex; align-items: center; gap: 1vw;">
+            <input type="range" id="cfg-total-adults" class="cfg-total-range" min="4" max="12" value="6">
+            <output id="cfg-total-val-adults" class="cfg-total-output" style="font-size: 1.4vw; font-weight: bold; color: var(--primary);">6</output>
+          </div>
+        </div>
+
+        <!-- ¿Cuántas desaparecen? -->
+        <div class="setting-card">
+          <label for="cfg-missing-adults">¿Cuántas desaparecen?</label>
+          <select id="cfg-missing-adults" class="cfg-missing-select">
+            <option value="1">1 Elemento</option>
+            <option value="2" selected>2 Elementos</option>
+            <option value="3">3 Elementos</option>
+            <option value="4">4 Elementos</option>
+          </select>
+        </div>
+
+        <!-- Tiempo de Observación -->
+        <div class="setting-card">
+          <label for="cfg-timer-adults">Tiempo de Observación</label>
+          <select id="cfg-timer-adults" class="cfg-timer-select">
+            <option value="0">Sin tiempo (Paso Manual)</option>
+            <option value="2000">2 Segundos (Ultra Rápido)</option>
+            <option value="3000" selected>3 Segundos (Recomendado Adultos)</option>
+            <option value="4000">4 Segundos</option>
+            <option value="6000">6 Segundos</option>
+          </select>
+        </div>
+
+        <!-- Ordenación de Estímulos -->
+        <div class="setting-card">
+          <label>Ordenación de Estímulos</label>
+          <div class="toggle-group" id="group-order-adults">
+            <button type="button" class="toggle-btn selected" data-value="disordered">🎲 Aleatorio / Desordenado</button>
+            <button type="button" class="toggle-btn" data-value="ordered">🔢 Ordenado (Secuencia)</button>
+          </div>
+        </div>
+
+        <!-- Dificultad Adaptativa -->
+        <div class="setting-card">
+          <label>Dificultad de Juego</label>
+          <div class="toggle-group" id="group-mode-adults">
+            <button type="button" class="toggle-btn selected" data-value="manual">Fijo / Manual</button>
+            <button type="button" class="toggle-btn" data-value="progressive">Adaptativo (Sube al acertar)</button>
+          </div>
+        </div>
+
+        <!-- Fondo de Pantalla -->
+        <div class="setting-card">
+          <label for="cfg-bg-mode-adults">Fondo de Pantalla</label>
+          <select id="cfg-bg-mode-adults" class="cfg-bg-select">
+            <option value="random-image" selected>🎲 Fotos Aleatorias por Ronda</option>
+            <option value="theme">🎨 Temático por Categoría</option>
+            <option value="fixed-1">🖼️ Fondo 1</option>
+            <option value="fixed-2">🖼️ Fondo 2</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: AJUSTES SOMBRAS MÁGICAS (SOLO SUS OPCIONES) -->
+    <div class="settings-section" id="sec-mode-silhouettes" style="display: none;">
+      <div class="settings-grid">
+        <!-- Dificultad de Sombras Mágicas -->
+        <div class="setting-card">
+          <label>Dificultad en Sombras Mágicas</label>
+          <div class="toggle-group" id="group-silhouettes-difficulty">
+            <button type="button" class="toggle-btn selected" data-value="easy">🟢 Fácil (3 Dibujos)</button>
+            <button type="button" class="toggle-btn" data-value="medium">🟡 Medio (4 Dibujos)</button>
+            <button type="button" class="toggle-btn" data-value="hard">🔴 Difícil (+Giro/Espejo)</button>
+          </div>
+        </div>
+
+        <!-- Presentación de Sombras -->
+        <div class="setting-card">
+          <label>Presentación de Sombras</label>
+          <div class="toggle-group" id="group-silhouettes-presentation">
+            <button type="button" class="toggle-btn selected" data-value="single">🔍 1 Sombra por turno (Recomendado)</button>
+            <button type="button" class="toggle-btn" data-value="all">🖼️ Todas las sombras a la vez</button>
+          </div>
+        </div>
+
+        <!-- Interacción al responder -->
+        <div class="setting-card">
+          <label>Interacción al responder</label>
+          <div class="toggle-group" id="group-silhouettes-interaction">
+            <button type="button" class="toggle-btn selected" data-value="tap">👆 Tocar dibujo (Recomendado PDI)</button>
+            <button type="button" class="toggle-btn" data-value="drag">✋ Arrastrar al lugar</button>
+          </div>
+        </div>
+
+        <!-- Modalidad de Juego -->
+        <div class="setting-card">
+          <label>Modalidad de Juego</label>
+          <div class="toggle-group" id="group-game-mode-silhouettes">
+            <button type="button" class="toggle-btn selected" data-value="single">👤 1 Jugador / Aula</button>
+            <button type="button" class="toggle-btn" data-value="versus">👥 2 Jugadores / Equipos (PDI)</button>
+          </div>
+        </div>
+
+        <!-- Familia Temática (Sombras - Visuales) -->
+        <div class="setting-card">
+          <label for="cfg-family-silhouettes">Familia Temática (Fichas Visuales)</label>
+          <select id="cfg-family-silhouettes" class="cfg-family-select"></select>
+        </div>
+
+        <!-- Fondo de Pantalla -->
+        <div class="setting-card">
+          <label for="cfg-bg-mode-silhouettes">Fondo de Pantalla</label>
+          <select id="cfg-bg-mode-silhouettes" class="cfg-bg-select">
+            <option value="random-image" selected>🎲 Fotos Aleatorias por Ronda</option>
+            <option value="theme">🎨 Temático por Categoría</option>
+            <option value="fixed-1">🖼️ Fondo 1</option>
+            <option value="fixed-2">🖼️ Fondo 2</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PANTALLA DEL JUEGO -->
+  <div id="game-screen" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-back btn-exit" id="btn-ingame-home">🚪 Salir</button>
+      
+      <div class="timer-container" id="timer-box">
+        <div class="timer-bar" id="timer-indicator"></div>
+      </div>
+
+      <!-- MARCADOR DE MODO EQUIPOS / VERSUS -->
+      <div class="versus-info" id="versus-topbar-info" style="display: none;">
+        <span class="turn-badge" id="versus-turn-badge">🔴 Turno: Equipo Rojo</span>
+        <div class="versus-score-box">
+          <span class="score-tag red">🔴 <strong id="score-red">0</strong></span>
+          <span class="score-divider">vs</span>
+          <span class="score-tag blue">🔵 <strong id="score-blue">0</strong></span>
+        </div>
+      </div>
+
+      <div class="topbar-rewards-group">
+        <div class="badge stars-badge" id="btn-open-rewards-topbar" title="Ver Álbum de Medallas">
+          <span>⭐</span> <strong id="global-stars-count">0</strong>
+        </div>
+        <div class="badge" id="level-badge" style="display: none;">
+          <span>Nivel:</span> <strong id="level-number">1</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tablero Central -->
+    <div id="board-area">
+      <div class="grid-board" id="main-board"></div>
+    </div>
+
+    <!-- Bandeja de Selección -->
+    <div id="selection-tray">
+      <div id="tray-instruction">
+        <span>👀 ¡Fíjate bien! Tienes unos segundos...</span>
+        <button class="btn btn-ready-tray pulse-btn" id="btn-manual-ready">¡Ya lo tengo! 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL APERTURA DE COFRE MÁGICO -->
+  <div id="chest-modal" class="modal-overlay">
+    <div class="chest-box">
+      <div class="chest-animation-area" id="chest-click-zone">
+        <div class="chest-icon-animated" id="chest-graphic">🎁</div>
+        <p class="chest-instruction" id="chest-prompt-text">✨ ¡Toca el cofre para abrirlo! ✨</p>
+      </div>
+
+      <div id="chest-reveal-container" style="display: none;">
+        <div class="chest-reveal-card" id="chest-reveal-card">
+          <span class="reveal-icon" id="reveal-icon">🦁✨</span>
+          <h3 id="reveal-title">León Dorado</h3>
+          <p id="reveal-desc">Edición limitada del Rey de la Selva</p>
+        </div>
+        <button class="btn btn-play" id="btn-claim-chest">¡Genial! 🌟</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ÁLBUM DE MEDALLAS Y COLECCIONABLES -->
+  <div id="rewards-modal" class="modal-overlay">
+    <div class="rewards-box">
+      <div class="rewards-header">
+        <h2 id="rewards-modal-title">🏆 Mi Álbum de Medallas y Coleccionables</h2>
+        <button class="btn btn-back" id="btn-close-rewards">✖ Volver</button>
+      </div>
+      <div class="rewards-tabs">
+        <button type="button" class="rewards-tab-btn active" id="tab-family-medals">🎨 Medallas por Familia</button>
+        <button type="button" class="rewards-tab-btn" id="tab-global-medals">🏆 Trofeos Globales</button>
+        <button type="button" class="rewards-tab-btn" id="tab-collectibles-medals">✨ Coleccionables</button>
+      </div>
+      <div class="rewards-grid" id="medals-grid-container">
+        <!-- Generado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE REFUERZO -->
+  <div id="feedback-modal" class="modal-overlay">
+    <div class="feedback-box">
+      <h2>¡GENIAL! 🌟</h2>
+      <div class="feedback-stars">⭐⭐⭐</div>
+      <div id="feedback-medal-notice" style="display: none;"></div>
+      <div style="display: flex; gap: 1vw; justify-content: center; margin-top: 1.5vh;">
+        <button class="btn btn-play" id="btn-next-round">Siguiente Ronda ➔</button>
+        <button class="btn btn-back" id="btn-feedback-exit">🚪 Salir</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Carga modular de scripts -->
+<script src="js/data.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
